@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 client/.vite
+
+*.crt
+*.key
