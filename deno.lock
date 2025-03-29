@@ -21,10 +21,15 @@
     "jsr:@std/path@1": "1.0.8",
     "jsr:@std/testing@*": "1.0.5",
     "npm:@deno/vite-plugin@1": "1.0.0_vite@5.4.11__@types+node@22.5.4_@types+node@22.5.4",
+    "npm:@peculiar/webcrypto@*": "1.5.0",
     "npm:@types/node@*": "22.5.4",
     "npm:@types/react@^18.3.12": "18.3.12",
+    "npm:@vitejs/plugin-basic-ssl@2": "2.0.0_vite@5.4.11__@types+node@22.5.4_@types+node@22.5.4",
     "npm:@vitejs/plugin-react@^4.3.3": "4.3.3_vite@5.4.11__@types+node@22.5.4_@babel+core@7.26.0_@types+node@22.5.4",
+    "npm:asn1js@*": "3.0.6",
     "npm:path-to-regexp@6.2.1": "6.2.1",
+    "npm:pkijs@*": "3.2.5",
+    "npm:pvutils@*": "1.1.3",
     "npm:react-dom@^18.3.1": "18.3.1_react@18.3.1",
     "npm:react-router-dom@^6.28.0": "6.28.0_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:react@^18.3.1": "18.3.1",
@@ -348,6 +353,33 @@
         "@jridgewell/sourcemap-codec"
       ]
     },
+    "@noble/hashes@1.7.1": {
+      "integrity": "sha512-B8XBPsn4vT/KJAGqDzbwztd+6Yte3P4V7iafm24bxgDe/mlRuK6xmWPuCNrKt2vDafZ8MfJLlchDG/vYafQEjQ=="
+    },
+    "@peculiar/asn1-schema@2.3.15": {
+      "integrity": "sha512-QPeD8UA8axQREpgR5UTAfu2mqQmm97oUqahDtNdBcfj3qAnoXzFdQW+aNf/tD2WVXF8Fhmftxoj0eMIT++gX2w==",
+      "dependencies": [
+        "asn1js",
+        "pvtsutils",
+        "tslib"
+      ]
+    },
+    "@peculiar/json-schema@1.1.12": {
+      "integrity": "sha512-coUfuoMeIB7B8/NMekxaDzLhaYmp0HZNPEjYRm9goRou8UZIC3z21s0sL9AWoCw4EG876QyO3kYrc61WNF9B/w==",
+      "dependencies": [
+        "tslib"
+      ]
+    },
+    "@peculiar/webcrypto@1.5.0": {
+      "integrity": "sha512-BRs5XUAwiyCDQMsVA9IDvDa7UBR9gAvPHgugOeGng3YN6vJ9JYonyDc0lNczErgtCWtucjR5N7VtaonboD/ezg==",
+      "dependencies": [
+        "@peculiar/asn1-schema",
+        "@peculiar/json-schema",
+        "pvtsutils",
+        "tslib",
+        "webcrypto-core"
+      ]
+    },
     "@remix-run/router@1.21.0": {
       "integrity": "sha512-xfSkCAchbdG5PnbrKqFWwia4Bi61nH+wm8wLEqfHDyp7Y3dZzgqS2itV8i4gAq9pC2HsTpwyBC6Ds8VHZ96JlA=="
     },
@@ -453,6 +485,12 @@
         "csstype"
       ]
     },
+    "@vitejs/plugin-basic-ssl@2.0.0_vite@5.4.11__@types+node@22.5.4_@types+node@22.5.4": {
+      "integrity": "sha512-gc9Tjg8bUxBVSTzeWT3Njc0Cl3PakHFKdNfABnZWiUgbxqmHDEn7uECv3fHVylxoYgNzAcmU7ZrILz+BwSo3sA==",
+      "dependencies": [
+        "vite"
+      ]
+    },
     "@vitejs/plugin-react@4.3.3_vite@5.4.11__@types+node@22.5.4_@babel+core@7.26.0_@types+node@22.5.4": {
       "integrity": "sha512-NooDe9GpHGqNns1i8XDERg0Vsg5SSYRhRxxyTGogUdkdNt47jal+fbuYi+Yfq6pzRCKXyoPcWisfxE6RIM3GKA==",
       "dependencies": [
@@ -464,6 +502,14 @@
         "vite"
       ]
     },
+    "asn1js@3.0.6": {
+      "integrity": "sha512-UOCGPYbl0tv8+006qks/dTgV9ajs97X2p0FAbyS2iyCRrmLSRolDaHdp+v/CLgnzHc3fVB+CwYiUmei7ndFcgA==",
+      "dependencies": [
+        "pvtsutils",
+        "pvutils",
+        "tslib"
+      ]
+    },
     "browserslist@4.24.2": {
       "integrity": "sha512-ZIc+Q62revdMcqC6aChtW4jz3My3klmCO1fEmINZY/8J3EpBg5/A/D0AKmBveUh6pgoeycoMkVMko84tuYS+Gg==",
       "dependencies": [
@@ -472,6 +518,9 @@
         "node-releases",
         "update-browserslist-db"
       ]
+    },
+    "bytestreamjs@2.0.1": {
+      "integrity": "sha512-U1Z/ob71V/bXfVABvNr/Kumf5VyeQRBEm6Txb0PQ6S7V5GpBM3w4Cbqz/xPDicR5tN0uvDifng8C+5qECeGwyQ=="
     },
     "caniuse-lite@1.0.30001680": {
       "integrity": "sha512-rPQy70G6AGUMnbwS1z6Xg+RkHYPAi18ihs47GH0jcxIG7wArmPgY3XbS2sRdBbxJljp3thdT8BIqv9ccCypiPA=="
@@ -567,6 +616,17 @@
     "picocolors@1.1.1": {
       "integrity": "sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA=="
     },
+    "pkijs@3.2.5": {
+      "integrity": "sha512-WX0la7n7CbnguuaIQoT4Fc0IJckPDOUldzOwlZ0nwpOcySS+Six/tXBdc0RX17J5o1To0SAr3xDJjDLsOfDFQA==",
+      "dependencies": [
+        "@noble/hashes",
+        "asn1js",
+        "bytestreamjs",
+        "pvtsutils",
+        "pvutils",
+        "tslib"
+      ]
+    },
     "postcss@8.4.49": {
       "integrity": "sha512-OCVPnIObs4N29kxTjzLfUryOkvZEq+pf8jTF0lg8E7uETuWHA+v7j3c/xJmiqpX450191LlmZfUKkXxkTry7nA==",
       "dependencies": [
@@ -574,6 +634,15 @@
         "picocolors",
         "source-map-js"
       ]
+    },
+    "pvtsutils@1.3.6": {
+      "integrity": "sha512-PLgQXQ6H2FWCaeRak8vvk1GW462lMxB5s3Jm673N82zI4vqtVUPuZdffdZbPDFRoU8kAhItWFtPCWiPpp4/EDg==",
+      "dependencies": [
+        "tslib"
+      ]
+    },
+    "pvutils@1.1.3": {
+      "integrity": "sha512-pMpnA0qRdFp32b1sJl1wOJNxZLQ2cbQx+k6tjNtZ8CpvVhNqEPRgivZ2WOUev2YMajecdH7ctUPDvEe87nariQ=="
     },
     "react-dom@18.3.1_react@18.3.1": {
       "integrity": "sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==",
@@ -645,6 +714,9 @@
     "source-map-js@1.2.1": {
       "integrity": "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA=="
     },
+    "tslib@2.8.1": {
+      "integrity": "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w=="
+    },
     "undici-types@6.19.8": {
       "integrity": "sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw=="
     },
@@ -666,9 +738,105 @@
         "rollup"
       ]
     },
+    "webcrypto-core@1.8.1": {
+      "integrity": "sha512-P+x1MvlNCXlKbLSOY4cYrdreqPG5hbzkmawbcXLKN/mf6DZW0SdNNkZ+sjwsqVkI4A4Ko2sPZmkZtCKY58w83A==",
+      "dependencies": [
+        "@peculiar/asn1-schema",
+        "@peculiar/json-schema",
+        "asn1js",
+        "pvtsutils",
+        "tslib"
+      ]
+    },
     "yallist@3.1.1": {
       "integrity": "sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g=="
     }
+  },
+  "redirects": {
+    "https://esm.sh/@peculiar/asn1-cms@^2.3.13?target=denonext": "https://esm.sh/@peculiar/asn1-cms@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-cms@^2.3.15?target=denonext": "https://esm.sh/@peculiar/asn1-cms@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-cms@^2.3.4?target=denonext": "https://esm.sh/@peculiar/asn1-cms@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-csr@^2.3.13?target=denonext": "https://esm.sh/@peculiar/asn1-csr@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-csr@^2.3.4?target=denonext": "https://esm.sh/@peculiar/asn1-csr@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-ecc@^2.3.14?target=denonext": "https://esm.sh/@peculiar/asn1-ecc@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-ecc@^2.3.4?target=denonext": "https://esm.sh/@peculiar/asn1-ecc@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-pfx@^2.3.15?target=denonext": "https://esm.sh/@peculiar/asn1-pfx@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-pkcs8@^2.3.15?target=denonext": "https://esm.sh/@peculiar/asn1-pkcs8@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-pkcs9@^2.3.13?target=denonext": "https://esm.sh/@peculiar/asn1-pkcs9@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-pkcs9@^2.3.4?target=denonext": "https://esm.sh/@peculiar/asn1-pkcs9@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-rsa@^2.3.13?target=denonext": "https://esm.sh/@peculiar/asn1-rsa@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-rsa@^2.3.15?target=denonext": "https://esm.sh/@peculiar/asn1-rsa@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-rsa@^2.3.4?target=denonext": "https://esm.sh/@peculiar/asn1-rsa@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-schema@^2.3.13?target=denonext": "https://esm.sh/@peculiar/asn1-schema@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-schema@^2.3.15?target=denonext": "https://esm.sh/@peculiar/asn1-schema@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-schema@^2.3.3?target=denonext": "https://esm.sh/@peculiar/asn1-schema@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-x509-attr@^2.3.15?target=denonext": "https://esm.sh/@peculiar/asn1-x509-attr@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-x509@^2.3.13?target=denonext": "https://esm.sh/@peculiar/asn1-x509@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-x509@^2.3.15?target=denonext": "https://esm.sh/@peculiar/asn1-x509@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/asn1-x509@^2.3.4?target=denonext": "https://esm.sh/@peculiar/asn1-x509@2.3.15?target=denonext",
+    "https://esm.sh/@peculiar/x509": "https://esm.sh/@peculiar/x509@1.12.3",
+    "https://esm.sh/asn1js@^3.0.5?target=denonext": "https://esm.sh/asn1js@3.0.6?target=denonext",
+    "https://esm.sh/pvtsutils@^1.3.2?target=denonext": "https://esm.sh/pvtsutils@1.3.6?target=denonext",
+    "https://esm.sh/pvtsutils@^1.3.5?target=denonext": "https://esm.sh/pvtsutils@1.3.6?target=denonext",
+    "https://esm.sh/pvtsutils@^1.3.6?target=denonext": "https://esm.sh/pvtsutils@1.3.6?target=denonext",
+    "https://esm.sh/pvutils@^1.1.3?target=denonext": "https://esm.sh/pvutils@1.1.3?target=denonext",
+    "https://esm.sh/reflect-metadata@^0.1.13?target=denonext": "https://esm.sh/reflect-metadata@0.1.14?target=denonext",
+    "https://esm.sh/reflect-metadata@^0.2.2?target=denonext": "https://esm.sh/reflect-metadata@0.2.2?target=denonext",
+    "https://esm.sh/tslib@^1.9.3?target=denonext": "https://esm.sh/tslib@1.14.1?target=denonext",
+    "https://esm.sh/tslib@^2.4.1?target=denonext": "https://esm.sh/tslib@2.8.1?target=denonext",
+    "https://esm.sh/tslib@^2.7.0?target=denonext": "https://esm.sh/tslib@2.8.1?target=denonext",
+    "https://esm.sh/tslib@^2.8.1?target=denonext": "https://esm.sh/tslib@2.8.1?target=denonext",
+    "https://esm.sh/tsyringe@^4.7.0?target=denonext": "https://esm.sh/tsyringe@4.8.0?target=denonext",
+    "https://esm.sh/tsyringe@^4.8.0?target=denonext": "https://esm.sh/tsyringe@4.8.0?target=denonext"
+  },
+  "remote": {
+    "https://deno.land/std@0.210.0/crypto/_fnv/fnv32.ts": "e4649dfdefc5c987ed53c3c25db62db771a06d9d1b9c36d2b5cf0853b8e82153",
+    "https://deno.land/std@0.210.0/crypto/_fnv/fnv64.ts": "bfa0e4702061fdb490a14e6bf5f9168a22fb022b307c5723499469bfefca555e",
+    "https://deno.land/std@0.210.0/crypto/_fnv/mod.ts": "f956a95f58910f223e420340b7404702ecd429603acd4491fa77af84f746040c",
+    "https://deno.land/std@0.210.0/crypto/_fnv/util.ts": "accba12bfd80a352e32a872f87df2a195e75561f1b1304a4cb4f5a4648d288f9",
+    "https://deno.land/std@0.210.0/crypto/_wasm/lib/deno_std_wasm_crypto.generated.mjs": "524b64057e4c1f0a4f65e9ec8cf7257a618e0f1fe326fa1e0bbff35444a7effb",
+    "https://deno.land/std@0.210.0/crypto/_wasm/mod.ts": "d7b7dc54bbd6b02c16cd08e8e3d30fa9aa9692efb112a7ab5d8595827b9a0234",
+    "https://deno.land/std@0.210.0/crypto/crypto.ts": "dc9a5bdcf0094c5e51c8185d011fcfc40a91ba3437629c4a231cc26c4af45a99",
+    "https://esm.sh/@peculiar/asn1-cms@2.3.15/denonext/asn1-cms.mjs": "f686a78bd912127516a01ef3053b2dac44ea0189117ad61f1806dd935ef07ff7",
+    "https://esm.sh/@peculiar/asn1-cms@2.3.15?target=denonext": "1a8abefba34fb9837d4afadc5782049ddd9aa8169c3a6ed2bcf8438c34449bc1",
+    "https://esm.sh/@peculiar/asn1-csr@2.3.15/denonext/asn1-csr.mjs": "d6aa9c2f3e5eec605ae0ee231b0070899eca013a4604d542676c93b1ba5a6258",
+    "https://esm.sh/@peculiar/asn1-csr@2.3.15?target=denonext": "69ab9c51a0ac3927d9e2aecaae1bb9e12b222a3091ed47a832bf8acdcb0730ed",
+    "https://esm.sh/@peculiar/asn1-ecc@2.3.15/denonext/asn1-ecc.mjs": "f226482daaec0737c64a5c241a195f9fdaf2cd3a03104e3fcec6d4aad6fbfccf",
+    "https://esm.sh/@peculiar/asn1-ecc@2.3.15?target=denonext": "aab136abae097d5363e7662c61861a4f958f94867701aa9380452586f6c5d5c8",
+    "https://esm.sh/@peculiar/asn1-pfx@2.3.15/denonext/asn1-pfx.mjs": "5bd6bee13103f90747b58d9339a2b8edbcd1d87eab0d9a3f13de67b8fb347dda",
+    "https://esm.sh/@peculiar/asn1-pfx@2.3.15?target=denonext": "45c041b8d83fa4407bd3ff664b2539a6d19354dc98a313df0c4038cd425b8692",
+    "https://esm.sh/@peculiar/asn1-pkcs8@2.3.15/denonext/asn1-pkcs8.mjs": "50e84845f792043714dec9f29506c1e66bce633559812ee89f305202dea762b4",
+    "https://esm.sh/@peculiar/asn1-pkcs8@2.3.15?target=denonext": "c8ad98fb4794a4b58ca0ae4347d37721482849d6973139b4201756a588813a67",
+    "https://esm.sh/@peculiar/asn1-pkcs9@2.3.15/denonext/asn1-pkcs9.mjs": "b041657381e27e8917f5932797b565247276b22114dfc0ab45fc8c2df73b9789",
+    "https://esm.sh/@peculiar/asn1-pkcs9@2.3.15?target=denonext": "dcdbe9f912cfbac8ff8944c997822142d1929679135b5b119e6c3c492d299a77",
+    "https://esm.sh/@peculiar/asn1-rsa@2.3.15/denonext/asn1-rsa.mjs": "f2d89a70c9c72f15c23506a7a6e26682994a92431659b02c253692fe41a61d73",
+    "https://esm.sh/@peculiar/asn1-rsa@2.3.15?target=denonext": "f197830b3f6a14bb3df2a878c6313a94d041d575fa1a0c8f6a41cb2721fc0117",
+    "https://esm.sh/@peculiar/asn1-schema@2.3.15/denonext/asn1-schema.mjs": "bd174dba3487bf7b1c988be5ea8e2c4302beb8466c985096821890230aa90040",
+    "https://esm.sh/@peculiar/asn1-schema@2.3.15?target=denonext": "206d914ba542f9d74e4071ff7be64d79f8647c1581f9af9203e10f81f93eee60",
+    "https://esm.sh/@peculiar/asn1-x509-attr@2.3.15/denonext/asn1-x509-attr.mjs": "9bad9789bc9e05849ec8b9e34fef31f73c5be504257671eb6963062a63be0dca",
+    "https://esm.sh/@peculiar/asn1-x509-attr@2.3.15?target=denonext": "c11bf31e369d5b57c38348a089233fa5e3ec44143bdaa98a7cf1d0486c3ede37",
+    "https://esm.sh/@peculiar/asn1-x509@2.3.15/denonext/asn1-x509.mjs": "8d4374db9f787dc4e5198d7b2bfc8646646b1995e118eb39152ec0be29853068",
+    "https://esm.sh/@peculiar/asn1-x509@2.3.15?target=denonext": "f2f436711cae271d8ce7c3beb2b2b42054d3960672da9193dc82398d5c454ca5",
+    "https://esm.sh/@peculiar/x509@1.12.3": "804bfe64eeedc573b6ada987d83ef206e43bee1d174832c38006f7a6ecacc23f",
+    "https://esm.sh/@peculiar/x509@1.12.3/denonext/x509.mjs": "e28f513d046a2ef43c3f32372275a837fe5c28066b11ee6c76193955bb098abe",
+    "https://esm.sh/@peculiar/x509@1.9.3": "f304f6f61a536532245646de7f7b19eb1c62cbe9a25c9c9c565fb02996a3645e",
+    "https://esm.sh/@peculiar/x509@1.9.3/denonext/x509.mjs": "8ffc2ffe71e0111c1c1c0fdba39c63ac1fa18b34e3a050f069de1257d169efad",
+    "https://esm.sh/asn1js@3.0.6/denonext/asn1js.mjs": "1eed78f04f3b59b47c1a82574f8386a52542d4eadadf802b042bac3bde4a8128",
+    "https://esm.sh/asn1js@3.0.6?target=denonext": "08360660992d09720be11f1e7c4efb03bc77cc4c576747c1a1cb84121a36a4e0",
+    "https://esm.sh/pvtsutils@1.3.6/denonext/pvtsutils.mjs": "38dbdeadb6676f5faa6ac030fc64c71de83cce812d8b872f72475193df208af4",
+    "https://esm.sh/pvtsutils@1.3.6?target=denonext": "fdcba495af48e623201b2c22462971e114fb98c8bdabb5c396f5c8176bd4eddc",
+    "https://esm.sh/pvutils@1.1.3/denonext/pvutils.mjs": "23b1f8a5bf6765b0f8d39d224f449ea6ffc7e6b0d09f80afa8ca871767b9e16c",
+    "https://esm.sh/pvutils@1.1.3?target=denonext": "771484ce9af9a4070d5ddf75b04dda5b6d246197366caed47472d6d7e5786d1c",
+    "https://esm.sh/reflect-metadata@0.1.14/denonext/reflect-metadata.mjs": "78bafcefde9c1392c6246f66f2b3d87e82732ca5cb7cd3afdfe128247a34395d",
+    "https://esm.sh/reflect-metadata@0.1.14?target=denonext": "98882a34d15563a938643772ab99221267441267fb2b984b8bb173d97f7222e5",
+    "https://esm.sh/reflect-metadata@0.2.2/denonext/reflect-metadata.mjs": "23fc11733664e8349c31617add4a39df818bc72aff94d98a4d05d82a0d0d6739",
+    "https://esm.sh/reflect-metadata@0.2.2?target=denonext": "7b7b11f30b9ac06541abbd564538632bfbe2c4d935643d6d360f7a2fcaeda310",
+    "https://esm.sh/tslib@1.14.1/denonext/tslib.mjs": "748739307d67fbaa8ae634eed70715714dd1f54f04fe8635bcb7f72cb0aaed62",
+    "https://esm.sh/tslib@1.14.1?target=denonext": "2982231d9e09e6f007540c7a24c12a7cccb0e84ca98df2ad86ff2bdca1c0fa35",
+    "https://esm.sh/tslib@2.8.1/denonext/tslib.mjs": "ebce3cd5facb654623020337f867b426ba95f71596ba87acc9e6c6f4e55905ca",
+    "https://esm.sh/tslib@2.8.1?target=denonext": "a89cbf082a0ad54e87ea85d75e6d5492b3e2ff0c5de9e3e478206a015b3f3992",
+    "https://esm.sh/tsyringe@4.8.0/denonext/tsyringe.mjs": "35a0d5676d515df6b37dd3ddd1cd2a5afe74d13438cb1698e2773a2d17a6dcf0",
+    "https://esm.sh/tsyringe@4.8.0?target=denonext": "9429971936d42c6845d6b019c61d2b6ada2232648676e440822515628bf72537"
   },
   "workspace": {
     "dependencies": [
@@ -676,6 +844,7 @@
       "jsr:@std/assert@1",
       "npm:@deno/vite-plugin@1",
       "npm:@types/react@^18.3.12",
+      "npm:@vitejs/plugin-basic-ssl@2",
       "npm:@vitejs/plugin-react@^4.3.3",
       "npm:react-dom@^18.3.1",
       "npm:react-router-dom@^6.28.0",
