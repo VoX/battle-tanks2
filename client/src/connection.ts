@@ -28,15 +28,12 @@ export async function connect() {
   await client.ready;
 
   const writer = client.datagrams.writable.getWriter();
-  await writer.write(new Uint8Array([3, 0, 3, 0]));
-  writer.releaseLock();
-  
   const reader = client.datagrams.readable.getReader();
-  const datagramResponse = await reader.read();
-  console.log("datagram:", datagramResponse.value, datagramResponse.done);
-  reader.releaseLock();
 
-  client.close();
-  await client.closed;
+  setInterval(async () => {
+    await writer.write(new Uint8Array([3, 0, 3, 0]));   
+    const datagramResponse = await reader.read();
+    console.log("datagram:", datagramResponse.value, datagramResponse.done);
+  }, 1000);
 }
 

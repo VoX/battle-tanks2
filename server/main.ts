@@ -4,6 +4,11 @@ import routeStaticFilesFrom from "./util/routeStaticFilesFrom.ts";
 import { generateCert } from "./util/certgen.ts";
 import { acceptConnections } from "./systems/connection.ts";
 
+globalThis.addEventListener("unhandledrejection", (e) => {
+  console.log(Date.now() + ":" + e.reason);
+  e.preventDefault();
+});
+
 const { cert, key, fingerprint } = await generateCert();
 const apiCert = Deno.readTextFileSync("ecdsa.crt");
 const apiKey = Deno.readTextFileSync("ecdsa.key");
