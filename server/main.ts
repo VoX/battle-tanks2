@@ -3,15 +3,16 @@ import { Router } from "jsr:@oak/oak/router";
 import routeStaticFilesFrom from "./util/routeStaticFilesFrom.ts";
 import { generateCert } from "./util/certgen.ts";
 import { acceptConnections } from "./systems/connection.ts";
+import { proxyRequestHandler } from "./proxyRequestHandler.ts";
 
 globalThis.addEventListener("unhandledrejection", (e) => {
-  console.log(Date.now() + ":" + e.reason);
+  console.error("Unhandled rejection:", e.reason);
   e.preventDefault();
 });
 
 const { cert, key, fingerprint } = await generateCert();
-const apiCert = Deno.readTextFileSync("ecdsa.crt");
-const apiKey = Deno.readTextFileSync("ecdsa.key");
+
+console.log(`Generated certificate with fingerprint: ${fingerprint}`);
 
 export const app = new Application();
 const router = new Router();
@@ -30,33 +31,17 @@ app.use(routeStaticFilesFrom([
 ]));
 app.use(router.allowedMethods());
 
-console.log(`Generated certificate with fingerprint: ${fingerprint}`);
-
 const server = new Deno.QuicEndpoint({ hostname: "localhost", port: 8878 });
 const listener = server.listen({ cert, key, alpnProtocols: ["h3"] });
 
 acceptConnections(listener);
 
-async function proxyRequestHandler(req: Request) {
-  try {
-    const url = new URL(req.url);
-    url.protocol = "http:";
-    url.port = (url.pathname === "/connectionInfo" ? 8000 : 3000).toString();
-    const options = {
-      headers: req.headers,
-      method: req.method,
-      body: req.body,
-    };
-
-    return await fetch(url.toString(), options);
-  } catch (error) {
-    console.error("Error in proxyRequestHandler:", error);
-    return new Response("Internal Server Error", { status: 500 });
-  }
-}
-
 if (import.meta.main) {
-  Deno.serve({ port: 8001, key: apiKey, cert: apiCert }, proxyRequestHandler);
+  Deno.serve({
+    port: 8001,
+    key: Deno.readTextFileSync("devCerts/key.pem"),
+    cert: Deno.readTextFileSync("devCerts/cert.pem"),
+  }, proxyRequestHandler);
 
-  await app.listen({ port: 8000, secure:true, key: apiKey, cert: apiCert });
+  await app.listen({ port: 8000 });
 }
