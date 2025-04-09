@@ -2,7 +2,7 @@ import { Application } from "jsr:@oak/oak/application";
 import { Router } from "jsr:@oak/oak/router";
 import routeStaticFilesFrom from "./util/routeStaticFilesFrom.ts";
 import { generateCert } from "./util/certgen.ts";
-import { acceptConnections } from "./systems/connection.ts";
+import { acceptConnections } from "./systems/ServerConnectionManager.ts";
 import { proxyRequestHandler } from "./proxyRequestHandler.ts";
 
 globalThis.addEventListener("unhandledrejection", (e) => {
@@ -34,7 +34,25 @@ app.use(router.allowedMethods());
 const server = new Deno.QuicEndpoint({ hostname: "localhost", port: 8878 });
 const listener = server.listen({ cert, key, alpnProtocols: ["h3"] });
 
-acceptConnections(listener);
+const connectionManager = acceptConnections(listener, {
+  onClientConnect: (clientId) => {
+    console.log(`Client connected: ${clientId}`);
+  },
+  onClientDisconnect: (clientId) => {
+    console.log(`Client disconnected: ${clientId}`);
+  },
+  onMessage: (clientId, data) => {
+    console.log(`Message from ${clientId}:`, data);
+
+    // You can respond to the client
+    connectionManager.sendToClient(clientId, new Uint8Array([1, 2, 3, 4]))
+      .catch((err) => console.error("Send error:", err));
+
+    // Or broadcast to all clients
+    connectionManager.broadcast(new Uint8Array([5, 6, 7, 8]), clientId)
+      .catch((err) => console.error("Broadcast error:", err));
+  },
+});
 
 if (import.meta.main) {
   Deno.serve({
