@@ -43,7 +43,7 @@ export class ServerConnectionManager {
       for await (const conn of listener) {
         try {
           const wt = await Deno.upgradeWebTransport(conn);
-          await this.handleNewConnection(wt);
+          await this.handleNewConnection(wt.url, wt);
         } catch (error) {
           console.error("Error handling connection:", error);
         }
@@ -141,13 +141,14 @@ export class ServerConnectionManager {
   }
 
   private async handleNewConnection(
+    url: string,
     wt: WebTransport,
   ): Promise<void> {
     try {
       await wt.ready;
-
-      const clientId = `client_${this.nextClientId++}`;
       const datagramWriter = wt.datagrams.writable.getWriter();
+
+      const clientId = new URL(url).pathname.substring(1);
 
       // Store client connection
       this.clients.set(clientId, {

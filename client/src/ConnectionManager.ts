@@ -4,6 +4,7 @@ export interface ConnectionOptions {
   onConnectionStatusChange?: (connected: boolean) => void;
   onMessage?: (data: Uint8Array) => void;
   heartbeatInterval?: number; // in milliseconds
+  clientId?: string; // Unique identifier for the client
 }
 
 export class ConnectionManager {
@@ -20,6 +21,7 @@ export class ConnectionManager {
   constructor(options: ConnectionOptions = {}) {
     this.options = {
       heartbeatInterval: 1000,
+      clientId: crypto.randomUUID(),
       ...options,
     };
   }
@@ -69,14 +71,18 @@ export class ConnectionManager {
     try {
       const { url, fingerprint } = await (await fetch("/connectionInfo"))
         .json();
-      console.log("Connecting to:", url, fingerprint);
+
+      const connectionUrl = new URL(url);
+      connectionUrl.pathname = "/" + this.options.clientId;
+
+      console.log("Connecting to:", connectionUrl, fingerprint);
 
       const certHash = hexStringToUint8Array(fingerprint);
 
       // Clean up previous connection if it exists
       await this.cleanupConnection();
 
-      this.client = new WebTransport(url, {
+      this.client = new WebTransport(connectionUrl, {
         serverCertificateHashes: [{
           algorithm: "sha-256",
           value: certHash,
