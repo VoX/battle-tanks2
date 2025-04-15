@@ -1,16 +1,7 @@
-# Battle Tanks 2
+# Webtransport Example
 
-## Todo
+## Run Locally
 
-- [] cert generation
-- [] https 
-- [] cors
-- [] api for getting connection info
-- [] connection management
-- [] react
-- [] bitECS
-- [] shared package?
-- [] messaging updates bitecs state
-- [] init system/tank
-- [] phaser 
-- [] 
+- Install deno
+- `deno install`
+- `deno run dev:full`

@@ -1,25 +1,28 @@
 import { Application } from "jsr:@oak/oak/application";
 import { Router } from "jsr:@oak/oak/router";
-import routeStaticFilesFrom from "./util/routeStaticFilesFrom.ts";
+import { routeStaticFilesFrom } from "./util/routeStaticFilesFrom.ts";
 import { generateCert } from "./util/certgen.ts";
-import { acceptConnections } from "./systems/ServerConnectionManager.ts";
-import { proxyRequestHandler } from "./proxyRequestHandler.ts";
+import { acceptConnections } from "./ServerConnectionManager.ts";
 
+// Workaround for a Deno WebTransport bug where timed out connections throw an uncatchable error
 globalThis.addEventListener("unhandledrejection", (e) => {
-  console.error("Unhandled rejection:", e.reason);
-  e.preventDefault();
+  if (e.reason instanceof Error && e.reason.message === "timed out") {
+    console.error("Unhandled timed out error:", e.reason);
+    e.preventDefault();
+  }
 });
 
 const { cert, key, fingerprint } = await generateCert();
-
-console.log(`Generated certificate with fingerprint: ${fingerprint}`);
+const wtUrl = new URL(
+  Deno.env.get("WEBTRANSPORT_URL") || "https://localhost:8878/",
+);
 
 export const app = new Application();
 const router = new Router();
 
 router.get("/connectionInfo", (ctx) => {
   ctx.response.body = {
-    url: "https://localhost:8878/",
+    url: wtUrl,
     fingerprint: fingerprint,
   };
 });
@@ -29,9 +32,20 @@ app.use(routeStaticFilesFrom([
   `${Deno.cwd()}/client/dist`,
   `${Deno.cwd()}/client/public`,
 ]));
+
 app.use(router.allowedMethods());
 
-const server = new Deno.QuicEndpoint({ hostname: "localhost", port: 8878 });
+const httpUrl = new URL(
+  Deno.env.get("HTTP_URL") || "http://localhost:8000/",
+);
+
+console.log(
+  `Webtransport server listening on: ${wtUrl} with fingerprint: ${fingerprint}`,
+);
+const server = new Deno.QuicEndpoint({
+  hostname: wtUrl.hostname,
+  port: parseInt(wtUrl.port),
+});
 const listener = server.listen({ cert, key, alpnProtocols: ["h3"] });
 
 const connectionManager = acceptConnections(listener, {
@@ -54,12 +68,10 @@ const connectionManager = acceptConnections(listener, {
   },
 });
 
-if (import.meta.main) {
-  Deno.serve({
-    port: 8001,
-    key: Deno.readTextFileSync("devCerts/key.pem"),
-    cert: Deno.readTextFileSync("devCerts/cert.pem"),
-  }, proxyRequestHandler);
-
-  await app.listen({ port: 8000 });
-}
+console.log(
+  `http server listening on: ${httpUrl}`,
+);
+await app.listen({
+  hostname: httpUrl.hostname,
+  port: parseInt(httpUrl.port),
+});

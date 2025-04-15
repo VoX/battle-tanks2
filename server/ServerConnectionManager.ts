@@ -28,7 +28,6 @@ export interface ConnectionHandlerOptions {
 export class ServerConnectionManager {
   private clients: Map<string, ClientConnection> = new Map();
   private options: ConnectionHandlerOptions;
-  private nextClientId = 0;
 
   constructor(options: ConnectionHandlerOptions = {}) {
     this.options = options;

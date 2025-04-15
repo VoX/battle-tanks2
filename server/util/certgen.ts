@@ -4,18 +4,18 @@ import * as asn1js from "npm:asn1js";
 
 // Initialize the PKIjs engine with the WebCrypto API
 pkijs.setEngine(
-  "Deno", 
-  new pkijs.CryptoEngine({ name: "Deno", crypto })
+  "Deno",
+  new pkijs.CryptoEngine({ name: "Deno", crypto }),
 );
 
 /**
  * Generates an ECDSA certificate for localhost, similar to:
- * 
+ *
  * openssl ecparam -name prime256v1 -genkey -noout -out ecdsa.key
- * openssl req -new -x509 -key ecdsa.key -out ecdsa.crt -days 7 -subj "/CN=localhost" 
+ * openssl req -new -x509 -key ecdsa.key -out ecdsa.crt -days 14 -subj "/CN=localhost"
  *   -addext "subjectAltName=DNS:localhost" -addext "basicConstraints=CA:FALSE"
- * 
- * @returns {Promise<{cert: string, key: string, fingerprint: string}>} 
+ *
+ * @returns {Promise<{cert: string, key: string, fingerprint: string}>}
  *   The certificate and private key as PEM strings, with the SHA-256 fingerprint
  */
 export async function generateCert(): Promise<{
@@ -32,7 +32,10 @@ export async function generateCert(): Promise<{
     },
   };
 
-  const keys = await crypto.subtle.generateKey(algorithm, true, ["sign", "verify"]);
+  const keys = await crypto.subtle.generateKey(algorithm, true, [
+    "sign",
+    "verify",
+  ]);
 
   // Create a new Certificate object
   const certificate = new pkijs.Certificate();
@@ -47,10 +50,10 @@ export async function generateCert(): Promise<{
     valueHex: serialNumber,
   });
 
-  // Set validity period (7 days)
+  // Set validity period (14 days)
   const notBefore = new Date();
   const notAfter = new Date();
-  notAfter.setDate(notAfter.getDate() + 7); // 7 days validity
+  notAfter.setDate(notAfter.getDate() + 14); // 14 days validity
   certificate.notBefore.value = notBefore;
   certificate.notAfter.value = notAfter;
 
@@ -83,7 +86,7 @@ export async function generateCert(): Promise<{
       critical: true,
       extnValue: basicConstraints.toSchema().toBER(false),
       parsedValue: basicConstraints,
-    })
+    }),
   );
 
   // 2. Subject Alternative Name (DNS:localhost)
@@ -102,7 +105,7 @@ export async function generateCert(): Promise<{
       critical: false,
       extnValue: altNames.toSchema().toBER(false),
       parsedValue: altNames,
-    })
+    }),
   );
 
   // Self-sign the certificate
@@ -117,17 +120,20 @@ export async function generateCert(): Promise<{
   const privateKeyDerBytes = new Uint8Array(privateKeyRaw);
 
   // Convert DER to PEM format
-  const certPem = `-----BEGIN CERTIFICATE-----\n${btoa(String.fromCharCode(...certDerBytes)).match(/.{1,64}/g)?.join('\n')}\n-----END CERTIFICATE-----`;
-  const keyPem = `-----BEGIN PRIVATE KEY-----\n${btoa(String.fromCharCode(...privateKeyDerBytes)).match(/.{1,64}/g)?.join('\n')}\n-----END PRIVATE KEY-----`;
+  const certPem = `-----BEGIN CERTIFICATE-----\n${
+    btoa(String.fromCharCode(...certDerBytes)).match(/.{1,64}/g)?.join("\n")
+  }\n-----END CERTIFICATE-----`;
+  const keyPem = `-----BEGIN PRIVATE KEY-----\n${
+    btoa(String.fromCharCode(...privateKeyDerBytes)).match(/.{1,64}/g)?.join(
+      "\n",
+    )
+  }\n-----END PRIVATE KEY-----`;
 
   // Calculate the SHA-256 fingerprint of the certificate
   const certHash = await crypto.subtle.digest("SHA-256", certDerBytes);
   const fingerprint = Array.from(new Uint8Array(certHash))
-    .map(b => b.toString(16).padStart(2, "0"))
+    .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
-
-  // Log the fingerprint for reference (similar to the last OpenSSL command)
-  console.log(`Certificate SHA-256 fingerprint: ${fingerprint}`);
 
   return {
     cert: certPem,
