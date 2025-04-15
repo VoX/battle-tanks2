@@ -9,13 +9,11 @@ export default defineConfig({
   server: {
     port: 3000,
     strictPort: true,
-    proxy: {
-      "/connectionInfo": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-        secure: false,
-        ws: false,
-      },
+    origin: "http://127.0.0.1:8000",
+    hmr: {
+      protocol: "ws",
+      host: "127.0.0.1",
+      port: 3000,
     },
   },
   plugins: [

@@ -3,6 +3,7 @@ import { Router } from "jsr:@oak/oak/router";
 import { routeStaticFilesFrom } from "./util/routeStaticFilesFrom.ts";
 import { generateCert } from "./util/certgen.ts";
 import { acceptConnections } from "./ServerConnectionManager.ts";
+import { proxyRequestHandler } from "./util/proxyRequestHandler.ts";
 
 // Workaround for a Deno WebTransport bug where timed out connections throw an uncatchable error
 globalThis.addEventListener("unhandledrejection", (e) => {
@@ -11,6 +12,10 @@ globalThis.addEventListener("unhandledrejection", (e) => {
     e.preventDefault();
   }
 });
+
+const viteProxyUrl = Deno.env.get("VITEPROXY_URL")
+  ? new URL(Deno.env.get("VITEPROXY_URL")!)
+  : null;
 
 const { cert, key, fingerprint } = await generateCert();
 const wtUrl = new URL(
@@ -28,10 +33,17 @@ router.get("/connectionInfo", (ctx) => {
 });
 
 app.use(router.routes());
-app.use(routeStaticFilesFrom([
-  `${Deno.cwd()}/client/dist`,
-  `${Deno.cwd()}/client/public`,
-]));
+
+if (!viteProxyUrl) {
+  app.use(routeStaticFilesFrom([
+    `${Deno.cwd()}/client/dist`,
+    `${Deno.cwd()}/client/public`,
+  ]));
+} else {
+  console.log(
+    `proxying to vite at: ${viteProxyUrl}`,
+  );
+}
 
 app.use(router.allowedMethods());
 
@@ -68,10 +80,13 @@ const connectionManager = acceptConnections(listener, {
   },
 });
 
-console.log(
-  `http server listening on: ${httpUrl}`,
-);
-await app.listen({
+await Deno.serve({
   hostname: httpUrl.hostname,
   port: parseInt(httpUrl.port),
+}, async (request, info) => {
+  let res = await app.handle(request, info.remoteAddr);
+  if (viteProxyUrl && res?.status === 404) {
+    res = await proxyRequestHandler(request, viteProxyUrl);
+  }
+  return res ?? Response.error();
 });
